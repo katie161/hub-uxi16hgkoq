@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Private Brand Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+/* base reset, so the page looks the same in the builder and on any host */
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font-size:14px}
+img{max-width:100%}
+/* Layout: quiet studio chrome; the client's own primary color paints the hero, with their full palette as a stripe along its base. */
+:root{
+  --bg:#F5F6F8; --surface:#FFFFFF; --ink:#15171C; --muted:#5B616D; --line:#DDE1E7; --chip:#ECEFF3;
+  --focus:#3B5BDB; --danger:#B42318; --ok:#1E7A4C;
+  --brand:#2F4858; --on-brand:#FFFFFF;
+  --f-display:"Playfair Display", Georgia, "Times New Roman", serif;
+  --f-body:"Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r:0;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101216; --surface:#171A20; --ink:#ECEEF2; --muted:#9CA2AE; --line:#2A2E37; --chip:#21252D;
+  --focus:#8DA2FB; --danger:#F97066; --ok:#47CD89; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101216; --surface:#171A20; --ink:#ECEEF2; --muted:#9CA2AE; --line:#2A2E37; --chip:#21252D;
+  --focus:#8DA2FB; --danger:#F97066; --ok:#47CD89; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px}
+.studio{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px}
+.studio-mark{width:22px;height:22px;border-radius:50%;background:conic-gradient(var(--brand) 0 50%, var(--ink) 0)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:0;padding:7px 14px;font-size:13.5px;font-weight:500;cursor:pointer;text-decoration:none;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.solid{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.small{padding:4px 10px;font-size:12.5px}
+.btn.danger{color:var(--danger)}
+.btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn[disabled]{opacity:.5;cursor:default}
+
+/* hero */
+.hero{background:var(--brand);color:var(--on-brand);border-radius:0;overflow:hidden;transition:background .4s}
+.hero-in{padding:clamp(28px,6vw,64px) clamp(20px,5vw,56px) clamp(24px,4vw,40px);display:grid;gap:18px}
+.hero.has-img{background-size:cover;background-position:center;background-repeat:no-repeat}
+.hero.has-img .hero-in{padding-top:clamp(72px,12vw,150px)}
+.hero.ov-none{text-shadow:0 1px 12px rgba(0,0,0,.45)}
+.hero .eyebrow{color:inherit;opacity:.75}
+.hero h1{font-size:clamp(40px,8vw,88px);font-weight:var(--w-hero,400);letter-spacing:var(--ls-hero,-.01em)}
+.hero .tag{font-size:clamp(17px,2.2vw,22px);max-width:40ch;opacity:.92}
+.hero .intro{max-width:62ch;opacity:.85}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:13px;opacity:.85;padding-top:6px}
+.meta b{font-weight:600}
+.stripe{display:flex;height:22px}
+.stripe span{flex:1}
+.hero-edit{justify-self:start}
+.hero .btn{background:transparent;color:inherit;border-color:currentColor}
+
+/* nav */
+nav.sec{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-top:24px}
+nav.sec .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+nav.sec a{padding:6px 12px;border-radius:0;color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
+nav.sec a:hover{color:var(--ink);background:var(--chip)}
+nav.sec a .n{font-family:var(--f-mono);font-size:11px;margin-left:5px;opacity:.7}
+
+/* sections */
+section{padding-block:44px 8px;scroll-margin-top:70px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.sec-head h2{font-size:clamp(28px,3.6vw,38px);font-weight:var(--w-head,400);letter-spacing:-.005em}
+.sec-head p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.empty{border:1.5px dashed var(--line);border-radius:0;padding:28px;color:var(--muted);text-align:center}
+.grid{display:grid;gap:16px}
+
+/* colors */
+.colors{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.swatch{background:var(--surface);border:1px solid var(--line);border-radius:0;overflow:hidden;display:flex;flex-direction:column}
+.swatch .chip{height:120px;display:flex;align-items:flex-end;justify-content:space-between;padding:10px 12px;font-size:12px;font-weight:600}
+.swatch .body{padding:12px 14px 14px;display:grid;gap:8px;flex:1}
+.swatch h3{font-size:17px;font-weight:600}
+.codes{display:grid;gap:2px}
+.code{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:center;border:0;background:none;padding:4px 6px;margin:0 -6px;border-radius:0;cursor:pointer;text-align:left}
+.code:hover{background:var(--chip)}
+.code .k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.note{font-size:13px;color:var(--muted);margin:0}
+.role{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:0;background:var(--chip);color:var(--muted)}
+.item-tools{display:flex;gap:6px;margin-top:auto;padding-top:4px}
+
+/* section order */
+main.wrap{display:flex;flex-direction:column}
+#banners{order:-1}
+.cz-list{display:grid;gap:10px}
+.cz-row{border:1px solid var(--line);padding:12px;display:grid;gap:10px;background:var(--bg);min-width:0}
+.cz-row > *,.cz-grid > *{min-width:0}
+.cz-row.off{opacity:.6}
+.cz-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cz-top b{font-size:14px}
+.cz-top label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500}
+.cz-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:8px}
+@media (max-width:560px){.cz-grid{grid-template-columns:minmax(0,1fr)}}
+.cz-row input[type=text],.cz-row textarea{border:1px solid var(--line);background:var(--surface);padding:8px 10px;width:100%;font-size:14px;line-height:1.45;min-width:0}
+.cz-row textarea{resize:vertical;min-height:0;display:block}
+.cz-row .k{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
+
+/* custom sections */
+.prose{max-width:68ch;display:grid;gap:14px;font-size:16px;line-height:1.75}
+.prose p{margin:0}
+.prose h3{font-size:19px;font-weight:600;margin-top:12px}
+.prose ul{margin:0;padding-left:1.2em;display:grid;gap:8px}
+.prose strong{font-weight:600}
+.logo .stage.photo{padding:0;background:var(--chip)}
+.logo .stage.photo img{width:100%;height:100%;max-height:none;object-fit:cover}
+.cz-add{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border:1.5px dashed var(--line);padding:12px}
+.cz-add select{border:1px solid var(--line);background:var(--surface);padding:7px 10px;flex:1 1 220px;min-width:0;max-width:100%}
+.cz-tag{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-left:6px}
+
+/* logo folders */
+.logo-groups{display:grid;gap:30px}
+.folder{border-top:1px solid var(--line);padding-top:16px}
+.folder.drop{outline:2px dashed var(--focus);outline-offset:8px}
+.folder-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.folder-title{display:flex;align-items:center;gap:10px;min-width:0}
+.folder-title h3{font-size:20px;font-weight:600;overflow-wrap:anywhere}
+.folder-title .n{font-size:12px;color:var(--muted)}
+.ficon{flex:none;width:18px;height:13px;border:1.5px solid currentColor;position:relative;margin-top:3px}
+.ficon::before{content:"";position:absolute;top:-5px;left:-1.5px;width:8px;height:4px;border:1.5px solid currentColor;border-bottom:0}
+
+/* type hierarchy */
+.tg-wrap{margin:0 0 28px;background:var(--surface);border:1px solid var(--line);padding:clamp(20px,4vw,44px) clamp(16px,4vw,52px)}
+.tg{display:grid;grid-template-columns:clamp(92px,17%,180px) minmax(0,1fr);column-gap:clamp(14px,3vw,34px);row-gap:clamp(22px,3.2vw,36px);border-left:1px solid var(--ink);padding-block:clamp(28px,5vw,56px);color:var(--ink)}
+.tg-label{border-top:1px solid var(--ink);padding:9px 0 0 10px;margin-top:.55em;font-family:var(--f-body);font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;align-self:start}
+.tg-c{min-width:0;overflow-wrap:anywhere}
+.tg-sep{display:inline-block;width:1px;height:.95em;background:currentColor;opacity:.55;margin:0 .7em;vertical-align:-.12em}
+.tg-logo{font-size:clamp(15px,2.1vw,24px);line-height:1.5}
+.tg-head{font-size:clamp(22px,3.3vw,38px);line-height:1.2}
+.tg-sub{font-size:clamp(14px,1.6vw,18px);line-height:1.6}
+.tg-body{font-size:clamp(13.5px,1.35vw,15.5px)}
+.tg-bodyhead{font-size:1.1em;margin-bottom:.8em}
+.tg-para{margin:0;font-size:1em;line-height:1.8;max-width:54ch}
+.tg-script{font-size:clamp(20px,2.6vw,30px);line-height:1.35}
+.tg-accent{font-size:clamp(18px,2.2vw,26px);line-height:1.3}
+.tg-data{font-size:clamp(14px,1.4vw,16px);font-variant-numeric:tabular-nums}
+
+/* logos */
+.logos{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.logo{background:var(--surface);border:1px solid var(--line);border-radius:0;overflow:hidden;display:flex;flex-direction:column}
+.logo .stage{aspect-ratio:4/3;max-width:100%;display:grid;place-items:center;padding:28px;border-bottom:1px solid var(--line)}
+.logo .stage.light{background:#FFFFFF}
+.logo .stage.dark{background:#16181C}
+.logo .stage.brand{background:var(--brand)}
+.logo .stage img{max-height:100%;max-width:100%;object-fit:contain}
+.logo .stage .ph{font-family:var(--f-mono);font-size:13px;color:#7A808C}
+.logo .body{padding:12px 14px 14px;display:grid;gap:6px;flex:1}
+.logo h3{font-size:16px;font-weight:600}
+
+/* type */
+.fonts{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+@media (max-width:420px){.fonts{grid-template-columns:1fr}}
+.font{background:var(--surface);border:1px solid var(--line);border-radius:0;padding:18px 20px;display:grid;gap:12px;min-width:0}
+.font .aa{font-size:64px;line-height:1;letter-spacing:-.02em}
+.font .spec{font-size:22px;line-height:1.3;overflow-wrap:anywhere}
+.font .alpha{font-size:14px;color:var(--muted);overflow-wrap:anywhere;line-height:1.5}
+.weights{display:flex;flex-wrap:wrap;gap:6px}
+.weights span{font-size:13px;padding:3px 9px;border-radius:0;background:var(--chip)}
+.font-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.font-head h3{font-family:var(--f-body);font-size:16px;font-weight:600}
+.font a{color:var(--ink)}
+.fontfiles{display:grid;gap:6px}
+.fontfiles .btn{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+
+/* style guide pdf */
+.pdf-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.pdf-bar .info{font-size:13px;color:var(--muted);min-width:0;overflow-wrap:anywhere}
+.pdf-bar .info b{color:var(--ink);font-weight:600}
+.pdf-viewer{height:min(78vh,920px);overflow-y:auto;overscroll-behavior:contain;background:var(--chip);border:1px solid var(--line);border-radius:0;padding:clamp(10px,2.5vw,24px);display:grid;gap:clamp(10px,2vw,20px);align-content:start}
+.pdf-viewer:fullscreen{height:100%;border-radius:0;border:0}
+.pdf-page{width:100%;max-width:960px;margin:0 auto;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.18),0 6px 18px rgba(0,0,0,.08);aspect-ratio:var(--ar,0.7727)}
+.pdf-page canvas{display:block;width:100%;height:100%}
+.doc-img{background:var(--chip);border:1px solid var(--line);padding:clamp(10px,2.5vw,24px);display:grid;place-items:center}
+.doc-img:fullscreen{background:#000;padding:0}
+.doc-img img{display:block;width:100%;max-width:1200px;height:auto}
+.doc-img:fullscreen img{max-height:100vh;object-fit:contain}
+.pdf-msg{padding:40px 16px;text-align:center;color:var(--muted)}
+
+/* files */
+.filegroup{margin-bottom:22px}
+.filegroup > .eyebrow{margin-bottom:8px}
+.files{border:1px solid var(--line);border-radius:0;background:var(--surface);overflow:hidden}
+.file{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.file:first-child{border-top:0}
+.ext{width:44px;height:44px;border-radius:0;background:var(--chip);display:grid;place-items:center;font-family:var(--f-mono);font-size:11px;font-weight:500;text-transform:uppercase}
+.file .info{min-width:0}
+.file .info b{display:block;font-weight:600;overflow-wrap:anywhere}
+.file .info span{font-size:13px;color:var(--muted)}
+.file .act{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:560px){.file{grid-template-columns:44px 1fr}.file .act{grid-column:1/-1;justify-content:flex-start}}
+
+/* banners, dialog, toast */
+.banner{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 16px;border-radius:0;background:var(--chip);margin-bottom:16px;font-size:14px}
+footer{padding-block:48px 40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:48px}
+dialog{border:1px solid var(--line);border-radius:0;background:var(--surface);color:var(--ink);padding:0;width:min(520px,calc(100vw - 32px));max-height:calc(100vh - 48px)}
+dialog::backdrop{background:rgba(10,12,16,.45)}
+dialog form{display:grid;gap:14px;padding:22px;min-width:0}
+dialog form > *{min-width:0}
+dialog.wide{width:min(760px,calc(100vw - 32px))}
+dialog h2{font-size:22px;font-weight:600}
+.field{display:grid;gap:5px}
+.field label{font-size:13px;font-weight:600}
+.field .hint{font-size:12px;color:var(--muted)}
+.field input,.field select,.field textarea{border:1px solid var(--line);background:var(--bg);border-radius:0;padding:9px 11px;width:100%}
+.field textarea{min-height:96px;resize:vertical}
+#f-customText-body,textarea[id$="-body"]{min-height:260px}
+.hexrow{display:flex;gap:8px}
+.hexrow input[type=color]{width:46px;padding:2px;height:42px;flex:none}
+.dlg-foot{display:flex;justify-content:flex-end;gap:8px;padding-top:6px}
+.err{color:var(--danger);font-size:13px;margin:0}
+.font-preview{border:1px solid var(--line);background:var(--bg);padding:14px;font-size:24px;line-height:1.3;overflow-wrap:anywhere;min-height:60px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:0;font-size:14px;z-index:20;max-width:calc(100vw - 32px)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* password screen on exported sites */
+.lock{position:fixed;inset:0;z-index:40;background:var(--bg);display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));overflow:auto}
+.lock-card{width:min(420px,100%);display:grid;gap:14px;background:var(--surface);border:1px solid var(--line);padding:clamp(22px,5vw,36px)}
+.lock-card h1{font-size:30px;font-weight:600}
+.lock-card .note{margin:0}
+.lock-card .btn{justify-content:center;padding-block:10px}
+.lock.auto .field,.lock.auto #lockBtn,.lock.auto .lock-msg{display:none}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <div class="studio"><span class="studio-mark" id="studioMark" aria-hidden="true" hidden=""></span><span id="studioName"></span></div>
+    <div class="actions">
+      <button class="btn" id="customizeBtn" type="button" hidden="">Customize sections</button><button class="btn" id="editToggle" type="button" hidden="">Edit hub</button>
+    </div>
+  </div>
+
+  <header class="hero" id="hero">
+    <div class="hero-in">
+      <div class="eyebrow" id="heroEyebrow">Brand delivery</div>
+      <h1 id="brandName">Brand hub</h1>
+      <div class="tag" id="brandTag">Loading the brand kit…</div>
+      <p class="intro" id="brandIntro" hidden=""></p>
+      <div class="meta" id="brandMeta"></div>
+      <button class="btn hero-edit" id="editBrand" type="button" hidden="">Edit brand details</button>
+    </div>
+    <div class="stripe" id="stripe" aria-hidden="true"></div>
+  </header>
+</div>
+
+<nav class="sec" aria-label="Sections">
+  <div class="wrap" id="navLinks"></div>
+</nav>
+
+<main class="wrap">
+  <div id="banners"></div>
+
+  <section id="direction">
+    <div class="sec-head">
+      <div><h2 data-title="">Direction board</h2><p data-desc="">The creative direction behind the brand: mood, imagery and references.</p></div>
+    </div>
+    <div class="pdf-bar" id="dirBar" hidden=""></div>
+    <div id="dirBody"></div>
+  </section>
+
+  <section id="colors">
+    <div class="sec-head">
+      <div><h2 data-title="">Color palette</h2><p data-desc="">Click any value to copy it. CMYK values are calculated unless a print value is set.</p></div>
+      <div class="actions"><button class="btn" type="button" id="copyCss">Copy as CSS variables</button><button class="btn solid" type="button" data-add="colors" hidden="">Add color</button></div>
+    </div>
+    <div class="grid colors" id="colorsList"></div>
+  </section>
+
+  <section id="logos">
+    <div class="sec-head">
+      <div><h2 data-title="">Logos</h2><p data-desc="">Approved marks and lockups, ready to download.</p></div>
+      <div class="actions"><button class="btn" type="button" data-add="logoFolders" hidden="">New folder</button><button class="btn solid" type="button" data-add="logos" hidden="">Add logo</button></div>
+    </div>
+    <div class="logo-groups" id="logosList"></div>
+  </section>
+
+  <section id="type">
+    <div class="sec-head">
+      <div><h2 data-title="">Typography</h2><p data-desc="">Typefaces, roles and the weights in use.</p></div>
+      <div class="actions"><button class="btn solid" type="button" data-add="fonts" hidden="">Add typeface</button></div>
+    </div>
+    <figure class="tg-wrap" id="tgWrap" hidden=""><div class="tg" id="typeGraphic" aria-label="Type hierarchy"></div></figure>
+    <div class="grid fonts" id="fontsList"></div>
+  </section>
+
+  <section id="guidelines">
+    <div class="sec-head">
+      <div><h2 data-title="">Style guide</h2><p data-desc="">The complete brand guidelines. Scroll to read, or download a copy.</p></div>
+    </div>
+    <div class="pdf-bar" id="guideBar"></div>
+    <div id="guideBody"></div>
+  </section>
+
+  <section id="files">
+    <div class="sec-head">
+      <div><h2 data-title="">Final files</h2><p data-desc="">Every deliverable in one place.</p></div>
+      <div class="actions"><button class="btn solid" type="button" data-add="files" hidden="">Add file</button></div>
+    </div>
+    <div id="filesList"></div>
+  </section>
+</main>
+
+<div class="wrap"><footer id="foot" hidden=""></footer></div>
+
+<dialog id="dlg"><form id="dlgForm" method="dialog"></form></dialog>
+<div class="toast" id="toast" hidden=""></div>
+<div class="lock" id="lock" hidden="">
+  <form class="lock-card" id="lockForm">
+    <div class="eyebrow">Private brand hub</div>
+    <h1>Enter password</h1>
+    <p class="note lock-msg">This brand hub is private. Enter the password your designer sent you.</p>
+    <div class="field"><label for="lockPw">Password</label><input id="lockPw" type="password" autocomplete="current-password" required=""></div>
+    <p class="err" id="lockErr" hidden=""></p>
+    <button class="btn solid" type="submit" id="lockBtn">Unlock</button>
+    <p class="note" id="lockProgress" hidden=""></p>
+  </form>
+</div>
+
+<script src="jszip.js"></script>
+<script>
+
+(() => {
+const COLS = ["colors", "logos", "logoFolders", "fonts", "files", "customItems"];
+const S = { hubDocs: {}, customItems: [], layout: null, brand: null, guide: null, direction: null, colors: [], logos: [], logoFolders: [], fonts: [], files: [] };
+let db = null, assets = null, dl = null, user = null, canEdit = false, editing = false, loaded = false, unreachable = false;
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "style") el.style.cssText = v;
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) el.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  return el;
+}
+let toastT;
+const EMBEDDED = window.parent !== window;
+function toast(msg, ms = 2600) { if (EMBEDDED) { try { parent.postMessage({ brandHubToast: msg }, "*"); } catch {} } const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, ms); }
+async function copy(text, label) {
+  try { await navigator.clipboard.writeText(text); toast("Copied " + (label || text)); }
+  catch { toast("Copy isn't available here. Select the text and copy it manually."); }
+}
+function normHex(v) { let s = String(v || "").trim().replace(/^#/, ""); if (/^[0-9a-f]{3}$/i.test(s)) s = s.split("").map(c => c + c).join(""); return /^[0-9a-f]{6}$/i.test(s) ? "#" + s.toUpperCase() : null; }
+function rgb(hex) { const n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+function cmyk(hex) { const [r, g, b] = rgb(hex).map(x => x / 255); const k = 1 - Math.max(r, g, b); if (k >= 1) return "0 0 0 100"; return [(1 - r - k) / (1 - k), (1 - g - k) / (1 - k), (1 - b - k) / (1 - k), k].map(x => Math.round(x * 100)).join(" "); }
+function lum(hex) { return rgb(hex).map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }).reduce((a, v, i) => a + v * [.2126, .7152, .0722][i], 0); }
+function onColor(hex) { return lum(hex) > 0.4 ? "#14161A" : "#FFFFFF"; }
+function slug(s) { return String(s || "color").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "color"; }
+function size(b) { if (!b) return ""; if (b < 1024) return b + " B"; if (b < 1048576) return (b / 1024).toFixed(0) + " KB"; return (b / 1048576).toFixed(1) + " MB"; }
+function ext(name) { const m = String(name || "").toLowerCase().match(/\.([a-z0-9]+)$/); return m ? m[1] : ""; }
+function fmtDate(d) { if (!d) return ""; const t = new Date(d + "T12:00:00"); return isNaN(t) ? d : t.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }); }
+const TYPES = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", webp: "image/webp", svg: "image/svg+xml", pdf: "application/pdf", mp4: "video/mp4", webm: "video/webm", woff2: "font/woff2", woff: "font/woff", ttf: "font/ttf", otf: "font/otf", txt: "text/plain", csv: "text/csv", md: "text/markdown", json: "application/json" };
+Object.assign(TYPES, { ai: "application/postscript", eps: "application/postscript", zip: "application/zip", mov: "video/quicktime", psd: "application/octet-stream", indd: "application/octet-stream" });
+const MAX_FILE = 25 * 1024 * 1024 - 1024; // the free host's per-file limit, less room for encryption
+const EDIT_LABELS = window.HUB_BUILDER ? ["Back to editing", "Preview as client"] : ["Edit hub", "Done editing"];
+// Files are served by window.HUB_ASSETS: object URLs in the builder, real paths (or decrypted copies) on the exported site.
+const blobUrl = id => (window.HUB_ASSETS && window.HUB_ASSETS.url(id)) || "";
+const assetBlob = async id => { if (!window.HUB_ASSETS) throw new Error("no files"); return window.HUB_ASSETS.blob(id); };
+function openAsset(item) {
+  let w = null; try { w = window.open("", "_blank"); } catch {}
+  assetBlob(item.asset).then(b => { const u = URL.createObjectURL(b); if (w) w.location.href = u; else location.href = u; })
+    .catch(() => { if (w) w.close(); toast("Couldn't open this file. Try Download instead."); });
+}
+const anchorDownloads = {
+  async save({ filename, data }) {
+    const u = URL.createObjectURL(data), a = document.createElement("a");
+    a.href = u; a.download = filename || "download"; document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(u), 60000);
+  }
+};
+/* ---------- encryption for password-protected sites ---------- */
+const b64e = u => { let s = ""; const a = new Uint8Array(u); for (let i = 0; i < a.length; i += 32768) s += String.fromCharCode.apply(null, a.subarray(i, i + 32768)); return btoa(s); };
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function deriveKey(pw, meta) {
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64d(meta.salt), iterations: meta.iter, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+}
+async function encryptBuf(key, buf, ivIn) {
+  const iv = ivIn || crypto.getRandomValues(new Uint8Array(12));
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, buf));
+  const out = new Uint8Array(12 + ct.length); out.set(iv); out.set(ct, 12); return out;
+}
+async function decryptBuf(key, buf) { const u = new Uint8Array(buf); return crypto.subtle.decrypt({ name: "AES-GCM", iv: u.slice(0, 12) }, key, u.slice(12)); }
+window.HUB_CRYPTO = { deriveKey, encryptBuf, b64e };
+
+/* ---------- confirm-in-place delete ---------- */
+function delBtn(onConfirm, label = "Delete") {
+  let armed = false, t;
+  const b = h("button", { class: "btn small danger", type: "button" }, label);
+  b.addEventListener("click", async () => {
+    if (!armed) { armed = true; b.textContent = "Click again to confirm"; t = setTimeout(() => { armed = false; b.textContent = label; }, 3500); return; }
+    clearTimeout(t); b.disabled = true; b.textContent = "Removing…";
+    try { await onConfirm(); toast("Removed"); } catch (e) { b.disabled = false; armed = false; b.textContent = label; toast("Couldn't remove it. Try again."); }
+  });
+  return b;
+}
+function tools(kind, item) {
+  if (!editing) return null;
+  return h("div", { class: "item-tools" },
+    h("button", { class: "btn small", type: "button", onclick: () => openEditor(kind, item) }, "Edit"),
+    delBtn(async () => {
+      await db.collection(kind).doc(item.id).delete();
+      if (item.asset && assets) { try { await assets.delete(item.asset); } catch {} }
+      if (item.fontFiles && assets) for (const x of item.fontFiles) { try { await assets.delete(x.asset); } catch {} }
+    }));
+}
+
+/* ---------- downloads ---------- */
+async function downloadAsset(item) {
+  if (!dl) { toast("Use Open, then save the file from the new tab."); return; }
+  try {
+    const blob = await assetBlob(item.asset);
+    await dl.save({ filename: item.filename || (slug(item.name) + "." + (ext(item.filename) || "pdf")), data: blob });
+    toast("Downloaded " + (item.filename || item.name));
+  } catch (e) {
+    const c = e && e.code;
+    if (c === "declined") return;
+    if (c === "rejected_extension" || c === "extension_not_enabled") toast("This file type can't be saved directly. Use Open, then save it from there.");
+    else if (c === "rate_limited") toast("A download is already waiting for your OK.");
+    else toast("Couldn't download this file. Try Open instead.");
+  }
+}
+function fileActions(item) {
+  const out = [];
+  if (item.asset) {
+    if (dl) out.push(h("button", { class: "btn small solid", type: "button", onclick: () => downloadAsset(item) }, "Download"));
+    const u = blobUrl(item.asset);
+    out.push(u ? h("a", { class: "btn small", href: u, target: "_blank", rel: "noopener" }, "Open") : h("button", { class: "btn small", type: "button", onclick: () => openAsset(item) }, "Open"));
+  } else if (item.link) {
+    out.push(h("a", { class: "btn small solid", href: item.link, target: "_blank", rel: "noopener" }, "Open link"));
+  }
+  return out;
+}
+
+/* ---------- render ---------- */
+function primaryHex() {
+  const p = S.colors.find(c => (c.role || "").toLowerCase() === "primary" && normHex(c.hex)) || S.colors.find(c => normHex(c.hex));
+  return p ? normHex(p.hex) : null;
+}
+const WNAMES = { 100: "Thin", 200: "ExtraLight", 300: "Light", 400: "Regular", 500: "Medium", 600: "SemiBold", 700: "Bold", 800: "ExtraBold", 900: "Black" };
+function fontStack(f, fallback) {
+  const fam = (f.family || "").replace(/"/g, "");
+  return (f.fontFiles && f.fontFiles.length ? `"hub-${f.id}", ` : "") + `"${fam}", ${fallback}`;
+}
+function updateFaces() {
+  const css = S.fonts.flatMap(f => (f.fontFiles || []).map(x =>
+    `@font-face{font-family:"hub-${f.id}";src:url("${blobUrl(x.asset)}");font-weight:${x.weight || 400};font-style:${x.italic ? "italic" : "normal"};font-display:swap}`)).join("\n");
+  let el = $("hubFaces");
+  if (!el) { el = h("style", { id: "hubFaces" }); document.head.append(el); }
+  if (el.textContent !== css) el.textContent = css;
+}
+// Reads the family name, weight and italic flag from a TTF, OTF or WOFF file; falls back to the file name.
+async function fontInfo(file) {
+  const base = file.name.replace(/\.[^.]+$/, "");
+  const info = { family: "", weight: 0, italic: /italic|oblique/i.test(base) };
+  const tag = (dv, o) => String.fromCharCode(dv.getUint8(o), dv.getUint8(o + 1), dv.getUint8(o + 2), dv.getUint8(o + 3));
+  try {
+    const buf = await file.arrayBuffer(), dv = new DataView(buf), sig = dv.getUint32(0), tables = {};
+    if (sig === 0x774F4646) {
+      const n = dv.getUint16(12);
+      for (let i = 0; i < n; i++) {
+        const o = 44 + i * 20, t = tag(dv, o);
+        if (t !== "name" && t !== "OS/2") continue;
+        const off = dv.getUint32(o + 4), comp = dv.getUint32(o + 8), orig = dv.getUint32(o + 12);
+        let bytes = new Uint8Array(buf, off, comp);
+        if (comp < orig) bytes = new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer());
+        tables[t] = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      }
+    } else if (sig === 0x00010000 || sig === 0x4F54544F || sig === 0x74727565) {
+      const n = dv.getUint16(4);
+      for (let i = 0; i < n; i++) {
+        const o = 12 + i * 16, t = tag(dv, o);
+        if (t === "name" || t === "OS/2") tables[t] = new DataView(buf, dv.getUint32(o + 8), dv.getUint32(o + 12));
+      }
+    }
+    const os = tables["OS/2"];
+    if (os) { info.weight = os.getUint16(4); if (os.byteLength > 63 && (os.getUint16(62) & 1)) info.italic = true; }
+    const nt = tables.name;
+    if (nt) {
+      const count = nt.getUint16(2), so = nt.getUint16(4), found = {};
+      for (let i = 0; i < count; i++) {
+        const r = 6 + i * 12, pid = nt.getUint16(r), nid = nt.getUint16(r + 6), len = nt.getUint16(r + 8), off = nt.getUint16(r + 10);
+        if (nid !== 1 && nid !== 16) continue;
+        const k = nid + (pid === 1 ? "m" : "w");
+        if (found[k]) continue;
+        let str = "";
+        if (pid === 1) for (let j = 0; j < len; j++) str += String.fromCharCode(nt.getUint8(so + off + j));
+        else for (let j = 0; j + 1 < len; j += 2) str += String.fromCharCode(nt.getUint16(so + off + j));
+        found[k] = str.trim();
+      }
+      info.family = found["16w"] || found["16m"] || found["1w"] || found["1m"] || "";
+    }
+  } catch {}
+  const flat = base.toLowerCase().replace(/[-_ ]/g, "");
+  if (!info.family) info.family = base.replace(/[-_ ]?(thin|extra ?light|ultra ?light|light|regular|book|medium|semi ?bold|demi ?bold|extra ?bold|bold|heavy|black|italic|oblique|variable|vf)\b.*$/i, "").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[-_]+/g, " ").trim() || base;
+  if (!info.weight) { const m = [["thin", 100], ["extralight", 200], ["ultralight", 200], ["light", 300], ["medium", 500], ["semibold", 600], ["demibold", 600], ["extrabold", 800], ["bold", 700], ["black", 900], ["heavy", 900]].find(([k]) => flat.includes(k)); info.weight = m ? m[1] : 400; }
+  info.weight = Math.min(900, Math.max(100, Math.round(info.weight / 100) * 100));
+  return info;
+}
+function applyHeadingFont() {
+  const root = document.documentElement.style;
+  const f = S.fonts.find(x => /^(head|display|title)/i.test(x.role || "") && x.family) || S.fonts.find(x => x.family);
+  if (!f) { ["--f-display", "--w-hero", "--w-head", "--ls-hero"].forEach(p => root.removeProperty(p)); return; }
+  loadGoogleFont(f);
+  const ws = f.fontFiles && f.fontFiles.length ? f.fontFiles.filter(x => !x.italic).map(x => x.weight || 400)
+    : String(f.weights || "").split(/[^0-9]+/).map(Number).filter(n => n >= 100 && n <= 900 && n % 100 === 0);
+  const heavy = ws.length ? Math.max(...ws.filter(w => w <= 800), Math.min(...ws)) : 400;
+  root.setProperty("--f-display", fontStack(f, `"Playfair Display", Georgia, serif`));
+  root.setProperty("--w-hero", heavy);
+  root.setProperty("--w-head", heavy);
+  root.setProperty("--ls-hero", "-.01em");
+}
+function renderHero() {
+  const b = S.brand || {};
+  const hex = primaryHex();
+  applyHeadingFont();
+  const root = document.documentElement.style;
+  if (hex) { root.setProperty("--brand", hex); root.setProperty("--on-brand", onColor(hex)); }
+  $("brandName").textContent = b.name || (loaded ? "Untitled brand" : "Brand hub");
+  $("brandTag").textContent = b.tagline || (!loaded ? (unreachable ? "This hub's content can't be reached yet. It will appear once the connection returns." : "Loading the brand kit…") : (canEdit ? "Add a tagline in brand details." : ""));
+  $("brandTag").hidden = !$("brandTag").textContent;
+  $("brandIntro").textContent = b.intro || ""; $("brandIntro").hidden = !b.intro;
+  $("heroEyebrow").textContent = b.client ? "Brand delivery for " + b.client : "Brand delivery";
+  const meta = $("brandMeta"); meta.replaceChildren();
+  if (b.deliveredOn) meta.append(h("span", null, h("b", null, "Delivered "), fmtDate(b.deliveredOn)));
+  if (b.version) meta.append(h("span", null, h("b", null, "Version "), b.version));
+  if (b.contact) meta.append(h("span", null, h("b", null, "Questions "), b.contact));
+  $("studioName").textContent = b.studio || ""; $("studioMark").hidden = !b.studio;
+  const footBits = [b.studio ? "Prepared by " + b.studio : "", b.contact ? "Questions: " + b.contact : ""].filter(Boolean);
+  $("foot").textContent = footBits.join(" · "); $("foot").hidden = !footBits.length;
+  if (b.name) document.title = b.name + " Brand Hub";
+  $("editBrand").hidden = !editing;
+  const hero = $("hero"), base = hex || "#2F4858";
+  const img = b.asset && /^image\//.test(b.contentType || "");
+  hero.classList.toggle("has-img", !!img);
+  if (img) {
+    const ov = (b.heroOverlay === "light" || b.heroOverlay === "none") ? b.heroOverlay : "dark";
+    const scrim = {
+      dark: "linear-gradient(100deg, rgba(0,0,0,.38) 0%, rgba(0,0,0,.14) 100%)",
+      light: "linear-gradient(100deg, rgba(255,255,255,.9) 0%, rgba(255,255,255,.35) 100%)",
+    }[ov];
+    hero.style.backgroundImage = (scrim ? scrim + ", " : "") + `url("${blobUrl(b.asset)}")`;
+    hero.style.color = ov === "light" ? "#14161A" : "#FFFFFF";
+    hero.classList.toggle("ov-none", ov !== "light");
+  } else { hero.style.backgroundImage = ""; hero.style.color = ""; hero.classList.remove("ov-none"); }
+  const st = $("stripe"); st.replaceChildren(...S.colors.filter(c => normHex(c.hex)).map(c => h("span", { style: "background:" + normHex(c.hex), title: c.name || "" })));
+  st.hidden = !st.children.length;
+}
+const SECTION_DEFAULTS = [
+  { id: "direction", title: "Direction board", nav: "Direction", desc: "The creative direction behind the brand: mood, imagery and references." },
+  { id: "colors", title: "Color palette", nav: "Colors", desc: "Click any value to copy it. CMYK values are calculated unless a print value is set." },
+  { id: "logos", title: "Logos", nav: "Logos", desc: "Approved marks and lockups, ready to download." },
+  { id: "type", title: "Typography", nav: "Typography", desc: "Typefaces, roles and the weights in use." },
+  { id: "guidelines", title: "Style guide", nav: "Style guide", desc: "The complete brand guidelines. Scroll to read, or download a copy." },
+  { id: "files", title: "Final files", nav: "Files", desc: "Every deliverable in one place." },
+];
+function sectionList() {
+  const saved = (S.layout && Array.isArray(S.layout.sections)) ? S.layout.sections : [];
+  const byId = Object.fromEntries(SECTION_DEFAULTS.map(d => [d.id, d]));
+  const out = [];
+  for (const x of saved) if (!out.some(o => o.id === x.id)) { if (byId[x.id]) out.push({ ...byId[x.id], ...x }); else if (x.custom && CUSTOM_TYPES[x.type]) out.push({ ...x }); }
+  for (const d of SECTION_DEFAULTS) if (!out.some(o => o.id === d.id)) out.push({ ...d });
+  return out;
+}
+function applySections() {
+  sectionList().forEach((x, i) => {
+    const el = x.custom ? ensureCustomSection(x) : document.getElementById(x.id); if (!el) return;
+    el.style.order = i; el.hidden = !!x.hidden;
+    el.querySelector("[data-title]").textContent = x.title || "";
+    const d = el.querySelector("[data-desc]"); d.textContent = x.desc || ""; d.hidden = !x.desc;
+  });
+}
+function renderNav() {
+  const counts = { colors: S.colors.length, logos: S.logos.length, type: S.fonts.length, files: S.files.length };
+  const items = sectionList().filter(x => !x.hidden).map(x => [x.id, x.nav || x.title, counts[x.id] || 0]);
+  $("navLinks").replaceChildren(...items.map(([id, label, n]) => h("a", { href: "#" + id, onclick: e => { e.preventDefault(); document.getElementById(id).scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); } }, label, n ? h("span", { class: "n" }, n) : null)));
+}
+function emptyState(text, kind, cta) {
+  return h("div", { class: "empty", style: "grid-column:1/-1" }, h("div", null, loaded ? text : "Loading…"),
+    editing && loaded ? h("div", { style: "margin-top:12px" }, h("button", { class: "btn solid", type: "button", onclick: () => openEditor(kind) }, cta)) : null);
+}
+function renderColors() {
+  const el = $("colorsList");
+  if (!S.colors.length) { el.replaceChildren(emptyState(canEdit ? "No colors yet. Add the palette's first color." : "The color palette hasn't been added yet.", "colors", "Add color")); return; }
+  el.replaceChildren(...S.colors.map(c => {
+    const hex = normHex(c.hex) || "#CCCCCC";
+    const [r, g, b] = rgb(hex);
+    const rows = [["HEX", hex], ["RGB", `${r} ${g} ${b}`], ["CMYK", c.cmyk || cmyk(hex)]];
+    if (c.pantone) rows.push(["Pantone", c.pantone]);
+    return h("article", { class: "swatch" },
+      h("div", { class: "chip", style: `background:${hex};color:${onColor(hex)}` }, h("span", null, c.role || ""), h("span", { class: "mono" }, hex)),
+      h("div", { class: "body" },
+        h("h3", null, c.name || "Unnamed color"),
+        h("div", { class: "codes" }, rows.map(([k, v]) => h("button", { class: "code", type: "button", title: "Copy " + k, onclick: () => copy(v, k + " " + v) }, h("span", { class: "k" }, k), h("span", { class: "mono" }, v)))),
+        c.notes ? h("p", { class: "note" }, c.notes) : null,
+        tools("colors", c)));
+  }));
+}
+const LOGO_EXT = new Set(["png", "jpg", "jpeg", "svg", "webp", "pdf"]);
+function logoTile(l, kind = "logos", photo = false) {
+  const isImg = l.asset && /^image\//.test(l.contentType || TYPES[ext(l.filename)] || "");
+  const stage = h("div", { class: "stage " + (photo ? "photo" : (l.bg || "light")) },
+    isImg ? h("img", { src: blobUrl(l.asset), alt: l.name || "Logo", loading: "lazy", onerror: e => e.target.replaceWith(h("span", { class: "ph" }, "Preview unavailable")) })
+          : h("span", { class: "ph" }, (ext(l.filename) || "link").toUpperCase()));
+  return h("article", { class: "logo" }, stage,
+    h("div", { class: "body" },
+      h("h3", null, l.name || "Logo"),
+      h("span", { class: "note mono" }, [ext(l.filename).toUpperCase(), size(l.sizeBytes)].filter(Boolean).join(" · ") || (l.link ? "External link" : "")),
+      l.notes ? h("p", { class: "note" }, l.notes) : null,
+      h("div", { class: "item-tools" }, fileActions(l)),
+      tools(kind, l)));
+}
+async function bulkUpload(folderId, files, bg) {
+  if (!assets) { toast("Uploads aren't available in this view."); return; }
+  let added = 0, skipped = 0, i = 0;
+  for (const fl of files) {
+    i++;
+    const t = TYPES[ext(fl.name)] || fl.type || "application/octet-stream";
+    if (fl.size > MAX_FILE) { skipped++; continue; }
+    toast(`Uploading ${i} of ${files.length}…`, 60000);
+    try {
+      const up = await assets.upload(fl, { type: t });
+      await db.collection("logos").add({ name: fl.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim(), folder: folderId, bg: bg || "light",
+        asset: up.id, filename: fl.name, sizeBytes: up.sizeBytes, contentType: up.contentType, order: Date.now() + i });
+      added++;
+    } catch { skipped++; }
+  }
+  toast(`Added ${added} file${added === 1 ? "" : "s"}` + (skipped ? `. ${skipped} skipped: each file must be under 25 MB. Add bigger files as links.` : ""), skipped ? 7000 : 3000);
+}
+function pickFiles(folder) {
+  const inp = h("input", { type: "file", multiple: true, hidden: true });
+  inp.addEventListener("change", () => { if (inp.files.length) bulkUpload(folder.id, [...inp.files], folder.bg); inp.remove(); });
+  document.body.append(inp); inp.click();
+}
+let zipLibP = null;
+function loadZip() {
+  if (window.JSZip) return Promise.resolve(window.JSZip);
+  if (!zipLibP) zipLibP = new Promise((res, rej) => { const el = document.createElement("script"); el.src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"; el.onload = () => res(window.JSZip); el.onerror = () => { zipLibP = null; rej(); }; document.head.append(el); });
+  return zipLibP;
+}
+async function downloadFolder(folder, items, btn) {
+  if (!dl) { toast("Downloads aren't available here."); return; }
+  const files = items.filter(l => l.asset);
+  if (!files.length) { toast("This folder only has links. Open each one to download."); return; }
+  btn.disabled = true; const label = btn.textContent;
+  try {
+    const JSZip = await loadZip(), zip = new JSZip(), used = new Set();
+    let n = 0;
+    for (const l of files) {
+      btn.textContent = `Preparing ${++n} of ${files.length}…`;
+      let fb; try { fb = await assetBlob(l.asset); } catch { continue; }
+      let name = l.filename || (slug(l.name) + "." + (ext(l.filename) || "png")), base = name, k = 1;
+      while (used.has(name.toLowerCase())) name = base.replace(/(\.[^.]+)?$/, m => `-${++k}${m}`);
+      used.add(name.toLowerCase());
+      zip.file(name, fb);
+    }
+    const blob = await zip.generateAsync({ type: "blob" });
+    await dl.save({ filename: slug(((S.brand && S.brand.name) ? S.brand.name + " " : "") + (folder.name || "logos")) + ".zip", data: blob });
+    toast("Downloaded " + (folder.name || "folder"));
+  } catch (e) {
+    if (!e || e.code !== "declined") toast("Couldn't build the zip. Download the files one at a time instead.");
+  } finally { btn.disabled = false; btn.textContent = label; }
+}
+function renderLogos() {
+  const el = $("logosList"), folders = S.logoFolders;
+  if (!S.logos.length && !folders.length) { el.replaceChildren(h("div", { class: "grid" }, emptyState(canEdit ? "No logos yet. Upload the primary mark, or create a folder and drop a set of files into it." : "Logo files haven't been added yet.", "logos", "Add logo"))); return; }
+  const known = new Set(folders.map(f => f.id));
+  const loose = S.logos.filter(l => !l.folder || !known.has(l.folder));
+  const parts = [];
+  if (loose.length) parts.push(h("div", { class: "grid logos" }, loose.map(logoTile)));
+  for (const f of folders) {
+    const items = S.logos.filter(l => l.folder === f.id);
+    const dlBtn = items.some(l => l.asset) && dl ? h("button", { class: "btn small solid", type: "button" }, "Download all") : null;
+    if (dlBtn) dlBtn.addEventListener("click", () => downloadFolder(f, items, dlBtn));
+    const box = h("div", { class: "folder" },
+      h("div", { class: "folder-head" },
+        h("div", { class: "folder-title" }, h("span", { class: "ficon", "aria-hidden": "true" }), h("h3", null, f.name || "Untitled folder"), h("span", { class: "n mono" }, items.length + " file" + (items.length === 1 ? "" : "s"))),
+        h("div", { class: "actions" }, dlBtn,
+          editing && assets ? h("button", { class: "btn small", type: "button", onclick: () => pickFiles(f) }, "Add files") : null,
+          editing ? h("button", { class: "btn small", type: "button", onclick: () => openEditor("logoFolders", f) }, "Rename") : null,
+          editing ? delBtn(async () => {
+            for (const l of items) { await db.collection("logos").doc(l.id).delete(); if (l.asset && assets) { try { await assets.delete(l.asset); } catch {} } }
+            await db.collection("logoFolders").doc(f.id).delete();
+          }, "Delete folder") : null)),
+      items.length ? h("div", { class: "grid logos" }, items.map(logoTile))
+        : h("div", { class: "empty" }, editing ? "This folder is empty. Use Add files or drag files here to upload several at once." : "No files in this folder yet."));
+    if (editing && assets) {
+      box.addEventListener("dragover", e => { e.preventDefault(); box.classList.add("drop"); });
+      box.addEventListener("dragleave", e => { if (!box.contains(e.relatedTarget)) box.classList.remove("drop"); });
+      box.addEventListener("drop", e => { e.preventDefault(); box.classList.remove("drop"); const fs = [...(e.dataTransfer.files || [])]; if (fs.length) bulkUpload(f.id, fs, f.bg); });
+    }
+    parts.push(box);
+  }
+  el.replaceChildren(...parts);
+}
+const loadedFonts = new Set();
+function loadGoogleFont(f) {
+  if (f.source !== "google" || !f.family) return;
+  const ws = String(f.weights || "").split(/[^0-9]+/).map(Number).filter(n => n >= 100 && n <= 900 && n % 100 === 0);
+  const fam = f.family.trim().replace(/\s+/g, "+");
+  const key = fam + ws.join(",");
+  if (loadedFonts.has(key)) return; loadedFonts.add(key);
+  const uniq = [...new Set(ws)].sort((a, b) => a - b);
+  document.head.append(h("link", { rel: "stylesheet", href: `https://fonts.googleapis.com/css2?family=${fam}${uniq.length ? ":wght@" + uniq.join(";") : ""}&display=swap` }));
+}
+const ROLE_ORDER = ["logo", "head", "sub", "body", "script", "accent", "data"];
+const TG_PARA = "Good typography sets the tone before a single word is read. This is how body copy sits at reading size, with comfortable line spacing for longer passages on the web and in print.";
+function primaryWeight(f) {
+  const fw = (f.fontFiles || []).filter(x => !x.italic).map(x => x.weight || 400);
+  const ws = fw.length ? fw : String(f.weights || "").split(/[^0-9]+/).map(Number).filter(n => n >= 100 && n <= 900 && n % 100 === 0);
+  if (!ws.length) return 400;
+  return ws.slice().sort((a, b) => Math.abs(a - 400) - Math.abs(b - 400) || a - b)[0];
+}
+function hasItalic(f) { return (f.fontFiles || []).some(x => x.italic) || /italic/i.test(f.weights || ""); }
+function roleKey(f) { const r = (f.role || "").toLowerCase(); return ROLE_ORDER.find(k => r.startsWith(k)) || (/display|title/.test(r) ? "head" : "accent"); }
+function shownWeight(f) { const d = parseInt(f.displayWeight); return d >= 100 && d <= 900 ? d : primaryWeight(f); }
+// The styling a designer sets on a typeface: weight, italic, tracking (in 1/1000 em, as in Illustrator and InDesign) and case.
+function fontStyleCss(f) {
+  let css = `font-family:${fontStack(f, "var(--f-body)")};font-weight:${shownWeight(f)}`;
+  const tr = parseFloat(f.tracking);
+  if (!isNaN(tr) && tr) css += `;letter-spacing:${tr / 1000}em`;
+  if (f.textCase === "upper") css += ";text-transform:uppercase";
+  else if (f.textCase === "lower") css += ";text-transform:lowercase";
+  else if (f.textCase === "smallcaps") css += ";font-variant-caps:all-small-caps";
+  if (f.fontStyle === "italic") css += ";font-style:italic";
+  return css;
+}
+// Size set for the hierarchy graphic, in px; shrinks on narrow screens and reaches the full size at about 1100px wide.
+function sizeCss(f) {
+  const v = parseFloat(f.size);
+  if (!(v > 0)) return "";
+  return `;font-size:clamp(${Math.max(11, Math.round(v * 0.55))}px, ${(v / 11).toFixed(2)}vw, ${v}px)`;
+}
+function fontStyleNote(f) {
+  const bits = [];
+  if (parseFloat(f.size) > 0) bits.push(parseFloat(f.size) + " px");
+  const tr = parseFloat(f.tracking); if (!isNaN(tr) && tr) bits.push("Tracking " + tr);
+  const c = { upper: "All caps", lower: "Lowercase", smallcaps: "Small caps" }[f.textCase]; if (c) bits.push(c);
+  if (f.fontStyle === "italic") bits.push("Italic");
+  if (parseInt(f.displayWeight)) bits.push(WNAMES[parseInt(f.displayWeight)] || f.displayWeight);
+  return bits.join(" · ");
+}
+function renderTypeGraphic() {
+  const list = S.fonts.filter(f => f.family).slice().sort((a, b) => ROLE_ORDER.indexOf(roleKey(a)) - ROLE_ORDER.indexOf(roleKey(b)));
+  $("tgWrap").hidden = !list.length;
+  const sep = () => h("span", { class: "tg-sep", "aria-hidden": "true" });
+  const brand = (S.brand && S.brand.name) || "";
+  $("typeGraphic").replaceChildren(...list.flatMap(f => {
+    const k = roleKey(f), w = shownWeight(f), wn = (WNAMES[w] || "Regular") + (f.fontStyle === "italic" ? " Italic" : ""), fam = f.family;
+    const st = fontStyleCss(f) + sizeCss(f);
+    const label = { logo: "Logo type", head: "Headings", sub: "Subheadings", body: "Body", script: "Script", accent: f.role || "Accent", data: "Data" }[k];
+    let c;
+    if (k === "logo") c = h("div", { class: "tg-logo", style: st }, brand ? [h("span", null, brand), sep()] : null, `${fam} ${wn}`);
+    else if (k === "head") c = h("div", { class: "tg-head", style: st }, `${fam} ${wn}`, hasItalic(f) ? [" & ", h("em", null, "Italic")] : null, sep(), "Headings");
+    else if (k === "sub") c = h("div", { class: "tg-sub", style: st }, fam, sep(), "Subheadings");
+    else if (k === "body") c = h("div", { class: "tg-body", style: st }, h("div", { class: "tg-bodyhead" }, `${fam} ${wn}`, sep(), "Paragraph"), h("p", { class: "tg-para" }, f.specimen || TG_PARA));
+    else if (k === "script") c = h("div", { class: "tg-script", style: st }, `${fam} / Script Accent`);
+    else if (k === "data") c = h("div", { class: "tg-data", style: st }, `${fam}`, sep(), "0123456789 · $1,250.00");
+    else c = h("div", { class: "tg-accent", style: st }, `${fam} / ${f.role || "Accent"}`);
+    return [h("div", { class: "tg-label" }, label), h("div", { class: "tg-c" }, c)];
+  }));
+}
+function renderFonts() {
+  renderTypeGraphic();
+  const el = $("fontsList");
+  if (!S.fonts.length) { el.replaceChildren(emptyState(canEdit ? "No typefaces yet. Add the headline face first." : "Typography hasn't been added yet.", "fonts", "Add typeface")); return; }
+  el.replaceChildren(...S.fonts.map(f => {
+    loadGoogleFont(f);
+    const ff = "font-family:" + fontStack(f, "var(--f-body)");
+    const ws = String(f.weights || "").split(/[,;]+/).map(s => s.trim()).filter(Boolean);
+    return h("article", { class: "font" },
+      h("div", { class: "font-head" }, h("h3", null, f.family || "Typeface"), h("span", { class: "role" }, f.role || "Typeface")),
+      h("div", { class: "aa", style: ff }, "Aa"),
+      h("div", { class: "spec", style: fontStyleCss(f) }, f.specimen || "The quick brown fox jumps over the lazy dog."),
+      fontStyleNote(f) ? h("div", { class: "note mono" }, "Set in use: " + fontStyleNote(f)) : null,
+      h("div", { class: "alpha", style: ff }, "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 &?!"),
+      ws.length ? h("div", { class: "weights" }, ws.map(w => h("span", { style: ff + ";font-weight:" + (parseInt(w) || 400) + (/italic/i.test(w) ? ";font-style:italic" : "") }, w))) : null,
+      f.fontFiles && f.fontFiles.length ? h("div", { class: "fontfiles" }, h("span", { class: "eyebrow" }, "Font files"),
+        h("div", { class: "weights" }, f.fontFiles.map(x => h("button", { class: "btn small", type: "button", title: "Download " + x.filename, onclick: () => downloadAsset({ asset: x.asset, filename: x.filename, name: x.filename }) }, x.filename)))) : null,
+      f.notes ? h("p", { class: "note" }, f.notes) : null,
+      f.link ? h("a", { href: f.link, target: "_blank", rel: "noopener", class: "note" }, f.source === "google" ? "Get it on Google Fonts" : f.source === "upload" ? "License and source" : "Get the typeface") : null,
+      tools("fonts", f));
+  }));
+}
+const PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+let pdfLibP = null;
+function loadPdfJs() {
+  if (pdfLibP) return pdfLibP;
+  const add = src => new Promise((res, rej) => { const el = document.createElement("script"); el.src = src; el.onload = res; el.onerror = rej; document.head.append(el); });
+  // The worker script loads first as a plain script so PDF.js runs it on the page itself (the frame can't start cross-site workers).
+  pdfLibP = add(PDFJS + "pdf.worker.min.js").then(() => add(PDFJS + "pdf.min.js")).then(() => window.pdfjsLib);
+  pdfLibP.catch(() => { pdfLibP = null; });
+  return pdfLibP;
+}
+// Two document slots share one reader: the direction board (image or PDF) and the style guide (PDF).
+const DOCS = {
+  direction: { label: "Direction board", bar: "dirBar", body: "dirBody", empty: "No direction board yet. Upload the mood or direction board as an image or PDF.", emptyView: "The direction board hasn't been added yet.", cta: "Upload direction board" },
+  guide: { label: "Style guide", bar: "guideBar", body: "guideBody", empty: "No style guide yet. Upload the brand guidelines PDF.", emptyView: "The style guide hasn't been added yet.", cta: "Upload style guide PDF" },
+};
+const docState = { direction: { key: null, pages: 0, page: 1 }, guide: { key: null, pages: 0, page: 1 } };
+const isPdf = d => (d.contentType || TYPES[ext(d.filename)] || "") === "application/pdf";
+function renderDocBar(slot) {
+  const cfg = DOCS[slot], st = docState[slot], g = S[slot], bar = $(cfg.bar);
+  if (!g || (!g.asset && !g.link)) { bar.replaceChildren(); bar.hidden = true; return; }
+  bar.hidden = false;
+  const info = h("div", { class: "info" }, h("b", null, g.name || g.filename || cfg.label),
+    [g.asset ? size(g.sizeBytes) : "External link", st.pages > 1 ? `Page ${st.page} of ${st.pages}` : null].filter(Boolean).map(t => " · " + t).join(""));
+  const acts = h("div", { class: "actions" });
+  if (g.asset) acts.append(h("button", { class: "btn small", type: "button", onclick: () => {
+    const v = $(cfg.body).querySelector(".pdf-viewer, .doc-img");
+    if (v && v.requestFullscreen) v.requestFullscreen().catch(() => toast("Full screen isn't available here.")); else toast("Full screen isn't available here.");
+  } }, "Full screen"));
+  acts.append(...fileActions({ ...g, name: g.name || cfg.label }));
+  if (editing) acts.append(
+    h("button", { class: "btn small", type: "button", onclick: () => openEditor(slot, g) }, "Replace"),
+    delBtn(async () => { await db.doc("hub/" + slot).delete(); if (g.asset && assets) { try { await assets.delete(g.asset); } catch {} } }, "Remove"));
+  bar.replaceChildren(info, acts);
+}
+function renderDoc(slot) {
+  renderDocBar(slot);
+  const cfg = DOCS[slot], st = docState[slot], g = S[slot], body = $(cfg.body);
+  const key = g ? (g.asset || g.link || "") : "";
+  if (!key) {
+    st.key = null; st.pages = 0;
+    body.replaceChildren(h("div", { class: "grid" }, emptyState(canEdit ? cfg.empty : cfg.emptyView, slot, cfg.cta)));
+    return;
+  }
+  if (key === st.key) return;
+  st.key = key; st.pages = 0; st.page = 1;
+  if (!g.asset) { body.replaceChildren(h("div", { class: "pdf-viewer", style: "height:auto" }, h("div", { class: "pdf-msg" }, "This file is hosted elsewhere. Use Open link above to view it."))); return; }
+  if (!isPdf(g)) {
+    body.replaceChildren(h("div", { class: "doc-img" }, h("img", { src: blobUrl(g.asset), alt: g.name || cfg.label, onerror: e => e.target.replaceWith(h("div", { class: "pdf-msg" }, "This image couldn't be shown here. Use Download or Open above.")) })));
+    return;
+  }
+  const viewer = h("div", { class: "pdf-viewer", tabindex: "0", "aria-label": cfg.label + " pages" }, h("div", { class: "pdf-msg" }, "Loading…"));
+  body.replaceChildren(viewer);
+  showPdf(slot, viewer, g.asset, key);
+}
+function renderGuidelines() { renderDoc("guide"); }
+async function showPdf(slot, viewer, assetId, key) {
+  const st = docState[slot];
+  try {
+    const [lib, buf] = await Promise.all([loadPdfJs(), assetBlob(assetId).then(b => b.arrayBuffer())]);
+    if (st.key !== key) return;
+    const pdf = await lib.getDocument({ data: buf, isEvalSupported: false }).promise;
+    if (st.key !== key) return;
+    const first = (await pdf.getPage(1)).getViewport({ scale: 1 });
+    const ar = first.width / first.height;
+    st.pages = pdf.numPages; renderDocBar(slot);
+    if (pdf.numPages <= 2) viewer.style.height = "auto";
+    const slots = [];
+    for (let n = 1; n <= pdf.numPages; n++) slots.push(h("div", { class: "pdf-page", "data-n": n, style: "--ar:" + ar, role: "img", "aria-label": "Page " + n }));
+    viewer.replaceChildren(...slots);
+    const done = new Set();
+    const draw = async el => {
+      const n = +el.dataset.n; if (done.has(n)) return; done.add(n);
+      try {
+        const page = await pdf.getPage(n);
+        const base = page.getViewport({ scale: 1 });
+        el.style.setProperty("--ar", base.width / base.height);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+        const vp = page.getViewport({ scale: Math.max(el.clientWidth, 320) * dpr / base.width });
+        const c = document.createElement("canvas"); c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+        await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+        el.replaceChildren(c);
+      } catch { done.delete(n); }
+    };
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) draw(e.target); }), { root: pdf.numPages <= 2 ? null : viewer, rootMargin: "800px 0px" });
+    slots.forEach(x => io.observe(x));
+    let raf = 0;
+    viewer.addEventListener("scroll", () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const mid = viewer.getBoundingClientRect().top + viewer.clientHeight / 3;
+        let cur = 1; for (const x of slots) { if (x.getBoundingClientRect().top <= mid) cur = +x.dataset.n; else break; }
+        if (cur !== st.page) { st.page = cur; renderDocBar(slot); }
+      });
+    }, { passive: true });
+  } catch (e) {
+    if (st.key !== key) return;
+    viewer.style.height = "auto";
+    viewer.replaceChildren(h("div", { class: "pdf-msg" }, "This file couldn't be displayed here. Use Download or Open above to view it."));
+    st.key = null;
+  }
+}
+const CATS = ["Logos", "Brand guidelines", "Print", "Digital", "Social", "Fonts", "Templates", "Other"];
+function renderFiles() {
+  const el = $("filesList");
+  if (!S.files.length) { el.replaceChildren(h("div", { class: "grid" }, emptyState(canEdit ? "No files yet. Upload final deliverables or link to large packages." : "Final files haven't been added yet.", "files", "Add file"))); return; }
+  const groups = {};
+  for (const f of S.files) (groups[f.category || "Other"] ||= []).push(f);
+  const order = [...CATS, ...Object.keys(groups).filter(k => !CATS.includes(k))];
+  el.replaceChildren(...order.filter(k => groups[k]).map(k => h("div", { class: "filegroup" }, h("div", { class: "eyebrow" }, k),
+    h("div", { class: "files" }, groups[k].map(f => h("div", { class: "file" },
+      h("div", { class: "ext" }, (ext(f.filename) || (f.link ? "link" : "file")).slice(0, 4)),
+      h("div", { class: "info" }, h("b", null, f.name || f.filename || "File"),
+        h("span", null, [f.filename && f.name !== f.filename ? f.filename : null, size(f.sizeBytes), f.link && !f.asset ? "External link" : null, f.notes].filter(Boolean).join(" · "))),
+      h("div", { class: "act" }, fileActions(f), editing ? tools("files", f) : null)))))));
+}
+function renderBanners() {
+  const out = [];
+  if (canEdit && loaded && !(S.brand && S.brand.name)) out.push(h("div", { class: "banner" }, h("span", null, "Welcome. Start with Edit brand details to name this brand, add a header image and set your studio name."), editing ? h("button", { class: "btn small solid", type: "button", onclick: () => openEditor("brand", null) }, "Edit brand details") : null));
+  const hasSample = canEdit && ([S.brand, ...COLS.flatMap(k => S[k])].some(x => x && x.sample));
+  if (hasSample) {
+    const clear = delBtn(clearSample, "Clear sample content");
+    out.push(h("div", { class: "banner" }, h("span", null, "This hub is showing sample content for a fictional brand. Edit it into your client's kit, or clear it and start fresh."), clear));
+  }
+  if (canEdit && !assets && loaded) out.push(h("div", { class: "banner" }, h("span", null, "File uploads aren't available in this view. You can still add files as links to Dropbox, Drive or similar.")));
+  $("banners").replaceChildren(...out);
+}
+function render() {
+  updateFaces();
+  applySections(); renderCustomSections(); renderHero(); renderNav(); renderBanners(); renderDoc("direction"); renderColors(); renderLogos(); renderFonts(); renderGuidelines(); renderFiles();
+  document.querySelectorAll("[data-add]").forEach(b => b.hidden = !editing);
+  $("copyCss").hidden = !S.colors.length;
+}
+
+/* ---------- editor ---------- */
+const FIELDS = {
+  brand: [["name", "Brand name", "text"], ["client", "Client", "text", "Shown as 'Brand delivery for …'"], ["tagline", "Tagline", "text"], ["intro", "Introduction", "textarea"], ["deliveredOn", "Delivered on", "date"], ["version", "Version", "text", "e.g. 1.0 Final"], ["studio", "Studio name", "text"], ["contact", "Contact for questions", "text", "An email or phone number clients can reach you at"], ["file", "Header image", "file", "JPG, PNG or WebP up to 25 MB. Wide images, 2000 px or more, look best.", ".jpg,.jpeg,.png,.webp"], ["heroOverlay", "Image overlay", "select", null, [["dark", "Subtle dark shade"], ["light", "Light wash"], ["none", "No overlay"]]], ["removeImage", "Remove the header image", "checkbox"]],
+  colors: [["name", "Color name", "text"], ["hex", "HEX", "hex"], ["role", "Role", "select", null, ["Primary", "Secondary", "Accent", "Neutral"]], ["pantone", "Pantone", "text", "e.g. PMS 2955 C"], ["cmyk", "CMYK for print", "text", "Leave blank to calculate from HEX"], ["notes", "Usage note", "text"]],
+  logoFolders: [["name", "Folder name", "text", "e.g. Submark"], ["bg", "Preview background for new files", "select", null, [["light", "Light"], ["dark", "Dark"], ["brand", "Brand color"]]], ["uploads", "Add files", "files", "Select as many as you like, any file type, each under 25 MB.", ""]],
+  logos: [["name", "Logo name", "text", "e.g. Primary lockup, full color"], ["folder", "Folder", "select", null, "FOLDERS"], ["bg", "Preview background", "select", null, [["light", "Light"], ["dark", "Dark"], ["brand", "Brand color"]]], ["file", "Logo file", "file", "Any file type up to 25 MB. PNG, JPG, SVG and WebP show a preview.", ""], ["link", "Or link to the file", "url", "For files over 25 MB, link to Dropbox, Drive or similar"], ["notes", "Usage note", "text"]],
+  fonts: [["family", "Font family", "text", "Exact name, e.g. Work Sans"], ["role", "Role", "select", null, ["Logo type", "Headlines", "Subheadings", "Body", "Script", "Accent", "Data"]], ["source", "Source", "select", null, [["google", "Google Fonts (loads a live preview)"], ["upload", "Uploaded font files"], ["other", "Licensed or other"]]], ["fontFiles", "Font files", "files", "TTF, OTF, WOFF or WOFF2. Select every weight and style you're delivering; the name and weights fill in from the files.", ".ttf,.otf,.woff,.woff2"], ["weights", "Weights in use", "text", "e.g. 400 Regular, 600 Semibold"], ["displayWeight", "Weight to show", "select", null, [["", "Closest to Regular"], ["100", "100 Thin"], ["200", "200 ExtraLight"], ["300", "300 Light"], ["400", "400 Regular"], ["500", "500 Medium"], ["600", "600 SemiBold"], ["700", "700 Bold"], ["800", "800 ExtraBold"], ["900", "900 Black"]]], ["fontStyle", "Style", "select", null, [["", "Normal"], ["italic", "Italic"]]], ["size", "Size", "number", "Font size in pixels for the type hierarchy graphic, e.g. 40 for headings or 16 for body. Leave blank for the default."], ["tracking", "Letter spacing", "number", "In tracking units, as in Illustrator or InDesign. 0 is normal, 200 is wide, -20 is tight."], ["textCase", "Case", "select", null, [["", "As typed"], ["upper", "All caps"], ["lower", "Lowercase"], ["smallcaps", "Small caps"]]], ["specimen", "Specimen sentence", "text"], ["link", "Where to get it", "url"], ["notes", "Usage note", "text"]],
+  customText: [["body", "Text", "textarea", "Leave a blank line between paragraphs. Start a line with ## for a subheading or - for a list item, and wrap words in **double asterisks** for bold."]],
+  customDoc: [["name", "Title", "text"], ["file", "File", "file", "JPG, PNG, WebP or PDF up to 25 MB", ".jpg,.jpeg,.png,.webp,.pdf"], ["link", "Or link to it", "url", "For files over 25 MB. Linked files open in a new tab."]],
+  customItems: [["name", "Name", "text"], ["file", "File", "file", "Any file type up to 25 MB", ""], ["link", "Or link to the file", "url", "For anything over 25 MB"], ["notes", "Caption or note", "text"]],
+  direction: [["name", "Title", "text", "e.g. Brand Direction Board"], ["file", "Direction board", "file", "JPG, PNG, WebP or PDF up to 25 MB", ".jpg,.jpeg,.png,.webp,.pdf"], ["link", "Or link to it", "url", "For files over 25 MB. Linked boards open in a new tab instead of in the page."]],
+  guide: [["name", "Title", "text", "e.g. Brand Guidelines"], ["file", "Style guide PDF", "file", "PDF up to 25 MB", ".pdf"], ["link", "Or link to the PDF", "url", "For guides over 25 MB. Linked guides open in a new tab instead of in the page."]],
+  files: [["name", "Display name", "text"], ["category", "Category", "select", null, CATS], ["file", "Upload file", "file", "Any file type up to 25 MB, including AI, EPS and zip", ""], ["link", "Or link to the file", "url", "For anything over 25 MB"], ["notes", "Note", "text"]],
+};
+const TITLES = { customItems: "file", logoFolders: "folder", brand: "Brand details", colors: "color", logos: "logo", fonts: "typeface", guide: "style guide", direction: "direction board", files: "file" };
+function openEditor(kind, item, extra = {}) {
+  const f = $("dlgForm"); const data = item || {};
+  const fields = FIELDS[kind].filter(([, , t]) => ((t !== "file" && t !== "files") || assets) && (t !== "checkbox" || data.asset));
+  const err = h("p", { class: "err", hidden: true });
+  const els = {};
+  const body = fields.map(([key, label, type, hint, opt]) => {
+    const id = "f-" + kind + "-" + key;
+    let input;
+    if (type === "textarea") input = h("textarea", { id }, data[key] || "");
+    else if (type === "select") input = h("select", { id }, (opt === "FOLDERS" ? [["", "No folder"], ...S.logoFolders.map(x => [x.id, x.name || "Untitled folder"])] : opt).map(o => { const [v, l] = Array.isArray(o) ? o : [o, o]; return h("option", { value: v, selected: (data[key] || "") === v }, l); }));
+    else if (type === "hex") {
+      const txt = h("input", { id, type: "text", value: data.hex || "#", placeholder: "#23466B", class: "mono" });
+      const pick = h("input", { type: "color", value: normHex(data.hex) || "#23466B", "aria-label": "Pick color" });
+      pick.addEventListener("input", () => txt.value = pick.value.toUpperCase());
+      txt.addEventListener("input", () => { const n = normHex(txt.value); if (n) pick.value = n; });
+      els[key] = txt;
+      return h("div", { class: "field" }, h("label", { for: id }, label), h("div", { class: "hexrow" }, pick, txt));
+    }
+    else if (type === "file") input = h("input", { id, type: "file", accept: opt });
+    else if (type === "files") input = h("input", { id, type: "file", accept: opt, multiple: true });
+    else if (type === "checkbox") input = h("input", { id, type: "checkbox", style: "width:auto;justify-self:start" });
+    else input = h("input", { id, type, value: data[key] || "" });
+    els[key] = input;
+    const cur = type === "files" && data.fontFiles && data.fontFiles.length ? "Current files: " + data.fontFiles.map(x => x.filename).join(", ") + ". Choosing new files replaces them." : type === "file" && data.filename ? "Current file: " + data.filename + ". Choose a new one to replace it." : hint;
+    return h("div", { class: "field" }, h("label", { for: id }, label), input, cur ? h("span", { class: "hint" }, cur) : null);
+  });
+  const save = h("button", { class: "btn solid", type: "submit" }, "Save");
+  f.replaceChildren(h("h2", null, kind === "brand" ? TITLES.brand : (item ? "Edit " : "Add ") + TITLES[kind]), ...body, err,
+    h("div", { class: "dlg-foot" }, h("button", { class: "btn", type: "button", onclick: () => $("dlg").close() }, "Cancel"), save));
+  if (kind === "fonts") {
+    const pv = h("div", { class: "font-preview", "aria-live": "polite" });
+    const upd = () => {
+      const f2 = { ...data, family: els.family.value.trim() || data.family || "", source: els.source.value, weights: els.weights.value, size: els.size.value, displayWeight: els.displayWeight.value, fontStyle: els.fontStyle.value, tracking: els.tracking.value, textCase: els.textCase.value };
+      if (!data.id && f2.fontFiles) delete f2.fontFiles;
+      loadGoogleFont(f2);
+      pv.setAttribute("style", fontStyleCss(f2) + (parseFloat(f2.size) > 0 ? `;font-size:${Math.min(parseFloat(f2.size), 72)}px` : ""));
+      pv.textContent = els.specimen.value.trim() || ((S.brand && S.brand.name) || "Brand name") + " " + (f2.family || "");
+    };
+    ["family", "source", "weights", "displayWeight", "fontStyle", "size", "tracking", "textCase", "specimen"].forEach(k => els[k] && els[k].addEventListener("input", upd));
+    ["source", "displayWeight", "fontStyle", "textCase"].forEach(k => els[k] && els[k].addEventListener("change", upd));
+    els.textCase.closest(".field").after(h("div", { class: "field" }, h("label", null, "Preview"), pv));
+    upd();
+  }
+  if (els.fontFiles) els.fontFiles.addEventListener("change", async () => {
+    const list = [...els.fontFiles.files];
+    if (!list.length) return;
+    const infos = (await Promise.all(list.map(fontInfo))).sort((a, b) => a.weight - b.weight || a.italic - b.italic);
+    if (!els.family.value.trim()) els.family.value = infos[0].family;
+    els.weights.value = infos.map(i => i.weight + " " + WNAMES[i.weight] + (i.italic ? " Italic" : "")).join(", ");
+    if (els.source) els.source.value = "upload";
+  });
+  f.onsubmit = async e => {
+    e.preventDefault(); err.hidden = true;
+    const out = {};
+    for (const [key, , type] of fields) { if (type === "checkbox") out[key] = els[key].checked; else if (type !== "file" && type !== "files") out[key] = els[key].value.trim(); }
+    if (kind === "colors") { const n = normHex(out.hex); if (!n) { err.textContent = "Enter a HEX value like #23466B."; err.hidden = false; return; } out.hex = n; }
+    save.disabled = true; save.textContent = "Saving…";
+    if (kind === "logoFolders") {
+      if (!out.name) { err.textContent = "Name the folder."; err.hidden = false; save.disabled = false; save.textContent = "Save"; return; }
+      const files = [...((els.uploads && els.uploads.files) || [])];
+      try {
+        let id = item && item.id;
+        if (item) await db.collection("logoFolders").doc(item.id).set({ ...out, order: item.order || Date.now() });
+        else id = (await db.collection("logoFolders").add({ ...out, order: Date.now() })).id;
+        $("dlg").close(); toast("Saved");
+        if (files.length) bulkUpload(id, files, out.bg);
+      } catch { err.textContent = "Couldn't save the folder. Try again."; err.hidden = false; save.disabled = false; save.textContent = "Save"; }
+      return;
+    }
+    try {
+      let oldAsset = null;
+      const fileIn = els.file && els.file.files && els.file.files[0];
+      if (fileIn) {
+        const e2 = ext(fileIn.name), type = TYPES[e2] || fileIn.type || "application/octet-stream";
+        if (fileIn.size > MAX_FILE) throw { code: "too_large" };
+        save.textContent = "Uploading…";
+        const up = await assets.upload(fileIn, { type });
+        oldAsset = data.asset || null;
+        Object.assign(out, { asset: up.id, filename: fileIn.name, sizeBytes: up.sizeBytes, contentType: up.contentType });
+        if (!out.name && kind !== "brand") out.name = fileIn.name.replace(/\.[^.]+$/, "");
+      } else if (data.asset && out.removeImage) oldAsset = data.asset;
+      else if (data.asset) Object.assign(out, { asset: data.asset, filename: data.filename, sizeBytes: data.sizeBytes, contentType: data.contentType });
+      delete out.removeImage;
+      let oldFontAssets = [];
+      const fontSel = els.fontFiles && els.fontFiles.files;
+      if (fontSel && fontSel.length) {
+        const arr = [];
+        for (const fl of fontSel) {
+          const t = TYPES[ext(fl.name)];
+          if (!t || !/^font\//.test(t)) throw { msg: fl.name + " isn't a TTF, OTF, WOFF or WOFF2 file." };
+          save.textContent = "Uploading " + (arr.length + 1) + " of " + fontSel.length + "…";
+          const info = await fontInfo(fl);
+          const up = await assets.upload(fl, { type: t });
+          arr.push({ asset: up.id, filename: fl.name, sizeBytes: up.sizeBytes, weight: info.weight, italic: info.italic });
+          if (!out.family) out.family = info.family;
+        }
+        out.fontFiles = arr.sort((a, b) => a.weight - b.weight || a.italic - b.italic);
+        oldFontAssets = (data.fontFiles || []).map(x => x.asset);
+      } else if (data.fontFiles) out.fontFiles = data.fontFiles;
+      if (kind === "fonts" && !out.family) throw { msg: "Add the font family name." };
+      if ((kind === "files" || kind === "logos" || kind === "guide" || kind === "direction" || kind === "customItems" || FIELDS[kind] === FIELDS.customDoc) && !out.asset && !out.link) throw { msg: "Upload a file or add a link." };
+      if (kind === "customItems") out.section = (item && item.section) || extra.section;
+      if (kind === "brand") await db.doc("hub/brand").set(out);
+      else if (kind.startsWith("c_")) await db.doc("hub/" + kind).set(out);
+      else if (kind === "guide" || kind === "direction") await db.doc("hub/" + kind).set(out);
+      else if (item) await db.collection(kind).doc(item.id).set({ ...out, order: item.order || Date.now() });
+      else await db.collection(kind).add({ ...out, order: Date.now() });
+      if (oldAsset && oldAsset !== out.asset) { try { await assets.delete(oldAsset); } catch {} }
+      for (const a of oldFontAssets) { try { await assets.delete(a); } catch {} }
+      $("dlg").close(); toast("Saved");
+    } catch (x) {
+      const code = x && x.code;
+      err.textContent = x && x.msg ? x.msg
+        : code === "too_large" ? "That file is over 25 MB, the most the free host allows per file. Add it as a link instead."
+        : code === "unsupported_type" ? "That file type can't be uploaded here. Add it as a link instead."
+        : code === "quota_or_state" ? "This hub's storage is full. Remove unused files or use a link."
+        : code === "quota_exceeded" ? "This hub has reached its item limit. Remove some items first."
+        : "Couldn't save. Check your connection and try again.";
+      err.hidden = false; save.disabled = false; save.textContent = "Save";
+    }
+  };
+  $("dlg").showModal();
+}
+// Light formatting for text sections: "## " subheadings, "- " list items, **bold**, blank line between paragraphs.
+function inlineText(t) { return t.split(/(\*\*[^*]+\*\*)/).filter(Boolean).map(x => /^\*\*.+\*\*$/.test(x) ? h("strong", null, x.slice(2, -2)) : x); }
+function richText(src) {
+  const out = [];
+  for (const block of String(src).split(/\n\s*\n/)) {
+    let lines = block.split("\n").map(l => l.trimEnd()).filter(l => l.trim());
+    while (lines.length && /^#{1,3}\s/.test(lines[0])) { out.push(h("h3", null, inlineText(lines.shift().replace(/^#+\s*/, "")))); }
+    if (!lines.length) continue;
+    if (lines.every(l => /^\s*[-•]\s+/.test(l))) { out.push(h("ul", null, lines.map(l => h("li", null, inlineText(l.replace(/^\s*[-•]\s+/, "")))))); continue; }
+    out.push(h("p", null, lines.flatMap((l, i) => i ? [h("br"), ...inlineText(l)] : inlineText(l))));
+  }
+  return out;
+}
+const CUSTOM_TYPES = {
+  text: { label: "Text", hint: "Paragraphs of copy, like a brand story or voice guide" },
+  gallery: { label: "Image gallery", hint: "A grid of images, like photography, mockups or social templates" },
+  document: { label: "Document", hint: "One PDF or image shown in the page, like a pitch deck or brand board" },
+  downloads: { label: "Downloads list", hint: "A list of files or links to download" },
+};
+function ensureCustomSection(x) {
+  let el = document.getElementById(x.id);
+  if (!el) {
+    el = h("section", { id: x.id, "data-custom": x.type },
+      h("div", { class: "sec-head" }, h("div", null, h("h2", { "data-title": true }), h("p", { "data-desc": true })), h("div", { class: "actions", "data-acts": true })),
+      h("div", { class: "pdf-bar", id: x.id + "-bar", hidden: true }),
+      h("div", { id: x.id + "-body" }));
+    document.querySelector("main").append(el);
+  }
+  return el;
+}
+async function galleryUpload(sectionId, files) {
+  if (!assets) { toast("Uploads aren't available in this view."); return; }
+  const okExt = new Set(["png", "jpg", "jpeg", "webp", "gif", "svg", "pdf"]);
+  let added = 0, skipped = 0, i = 0;
+  for (const fl of files) {
+    i++;
+    const e = ext(fl.name), t = TYPES[e];
+    if (!t || !okExt.has(e) || fl.size > MAX_FILE) { skipped++; continue; }
+    toast(`Uploading ${i} of ${files.length}…`, 60000);
+    try {
+      const up = await assets.upload(fl, { type: t });
+      await db.collection("customItems").add({ section: sectionId, name: fl.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim(), asset: up.id, filename: fl.name, sizeBytes: up.sizeBytes, contentType: up.contentType, order: Date.now() + i });
+      added++;
+    } catch { skipped++; }
+  }
+  toast(`Added ${added} image${added === 1 ? "" : "s"}` + (skipped ? `. ${skipped} skipped: use PNG, JPG, WebP, GIF, SVG or PDF under 25 MB.` : ""), skipped ? 7000 : 3000);
+}
+function pickGallery(sectionId) {
+  const inp = h("input", { type: "file", multiple: true, accept: ".png,.jpg,.jpeg,.webp,.gif,.svg,.pdf", hidden: true });
+  inp.addEventListener("change", () => { if (inp.files.length) galleryUpload(sectionId, [...inp.files]); inp.remove(); });
+  document.body.append(inp); inp.click();
+}
+async function deleteCustomContent(id) {
+  const d = S.hubDocs[id];
+  if (d) { await db.doc("hub/" + id).delete(); if (d.asset && assets) { try { await assets.delete(d.asset); } catch {} } }
+  for (const it of S.customItems.filter(i => i.section === id)) { await db.collection("customItems").doc(it.id).delete(); if (it.asset && assets) { try { await assets.delete(it.asset); } catch {} } }
+}
+function renderCustomSections() {
+  const list = sectionList().filter(x => x.custom), ids = new Set(list.map(x => x.id));
+  document.querySelectorAll("section[data-custom]").forEach(el => { if (!ids.has(el.id)) { el.remove(); delete DOCS[el.id]; delete docState[el.id]; } });
+  for (const x of list) {
+    const el = ensureCustomSection(x), acts = el.querySelector("[data-acts]"), body = $(x.id + "-body");
+    acts.replaceChildren();
+    if (x.type === "text") {
+      FIELDS[x.id] = FIELDS.customText; TITLES[x.id] = "text";
+      const d = S.hubDocs[x.id];
+      if (editing) acts.append(h("button", { class: "btn solid", type: "button", onclick: () => openEditor(x.id, d || null) }, d && d.body ? "Edit text" : "Add text"));
+      body.replaceChildren(d && d.body ? h("div", { class: "prose" }, richText(d.body))
+        : h("div", { class: "grid" }, emptyState(canEdit ? "No text yet. Add the copy for this section." : "This section hasn't been filled in yet.", x.id, "Add text")));
+    } else if (x.type === "document") {
+      FIELDS[x.id] = FIELDS.customDoc; TITLES[x.id] = "document";
+      DOCS[x.id] = { label: x.title || "Document", bar: x.id + "-bar", body: x.id + "-body", empty: "Nothing here yet. Upload a PDF or image.", emptyView: "This section hasn't been filled in yet.", cta: "Upload document" };
+      docState[x.id] = docState[x.id] || { key: null, pages: 0, page: 1 };
+      S[x.id] = S.hubDocs[x.id] || null;
+      renderDoc(x.id);
+    } else if (x.type === "gallery") {
+      const items = S.customItems.filter(i => i.section === x.id);
+      if (items.some(i => i.asset) && dl) { const b = h("button", { class: "btn", type: "button" }, "Download all"); b.addEventListener("click", () => downloadFolder({ name: x.title }, items, b)); acts.append(b); }
+      if (editing && assets) acts.append(h("button", { class: "btn solid", type: "button", onclick: () => pickGallery(x.id) }, "Add images"));
+      body.replaceChildren(items.length ? h("div", { class: "grid logos" }, items.map(i => logoTile(i, "customItems", true)))
+        : h("div", { class: "empty" }, editing ? "No images yet. Use Add images to upload several at once." : "No images have been added yet."));
+    } else if (x.type === "downloads") {
+      const items = S.customItems.filter(i => i.section === x.id);
+      if (editing) acts.append(h("button", { class: "btn solid", type: "button", onclick: () => openEditor("customItems", null, { section: x.id }) }, "Add file"));
+      body.replaceChildren(items.length ? h("div", { class: "files" }, items.map(f => h("div", { class: "file" },
+          h("div", { class: "ext" }, (ext(f.filename) || (f.link ? "link" : "file")).slice(0, 4)),
+          h("div", { class: "info" }, h("b", null, f.name || f.filename || "File"), h("span", null, [size(f.sizeBytes), f.link && !f.asset ? "External link" : null, f.notes].filter(Boolean).join(" · "))),
+          h("div", { class: "act" }, fileActions(f), editing ? tools("customItems", f) : null))))
+        : h("div", { class: "empty" }, editing ? "No files yet. Use Add file to upload one or add a link." : "No files have been added yet."));
+    }
+  }
+}
+function openCustomize() {
+  const rows = sectionList().map(x => ({ ...x })), removed = [];
+  const f = $("dlgForm"), list = h("div", { class: "cz-list" }), err = h("p", { class: "err", hidden: true });
+  const draw = () => list.replaceChildren(...rows.map((x, i) => {
+    const t = h("input", { type: "text", id: "cz-t-" + x.id, value: x.title, "aria-label": "Title" }); t.addEventListener("input", () => x.title = t.value);
+    const n = h("input", { type: "text", id: "cz-n-" + x.id, value: x.nav || "", "aria-label": "Tab label" }); n.addEventListener("input", () => x.nav = n.value);
+    const d = h("textarea", { id: "cz-d-" + x.id, rows: 2, "aria-label": "Description" }, x.desc || ""); d.addEventListener("input", () => x.desc = d.value);
+    const show = h("input", { type: "checkbox", id: "cz-s-" + x.id }); show.checked = !x.hidden;
+    show.addEventListener("change", () => { x.hidden = !show.checked; draw(); });
+    const move = dir => { const j = i + dir; if (j < 0 || j >= rows.length) return; [rows[i], rows[j]] = [rows[j], rows[i]]; draw(); };
+    return h("div", { class: "cz-row" + (x.hidden ? " off" : "") },
+      h("div", { class: "cz-top" }, h("b", null, (i + 1) + ". " + (x.custom ? (x.title || CUSTOM_TYPES[x.type].label) : SECTION_DEFAULTS.find(dd => dd.id === x.id).title), x.custom ? h("span", { class: "cz-tag" }, CUSTOM_TYPES[x.type].label) : null),
+        h("div", { class: "actions" }, h("label", { for: "cz-s-" + x.id }, show, "Show"),
+          x.custom ? (() => { let armed = false; const b = h("button", { class: "btn small danger", type: "button" }, "Remove"); b.addEventListener("click", () => { if (!armed) { armed = true; b.textContent = "Click again to remove"; return; } rows.splice(i, 1); removed.push(x.id); draw(); }); return b; })() : null,
+          h("button", { class: "btn small", type: "button", disabled: i === 0, "aria-label": "Move up", onclick: () => move(-1) }, "Up"),
+          h("button", { class: "btn small", type: "button", disabled: i === rows.length - 1, "aria-label": "Move down", onclick: () => move(1) }, "Down"))),
+      h("div", { class: "cz-grid" }, h("div", null, h("span", { class: "k" }, "Title"), t), h("div", null, h("span", { class: "k" }, "Tab label"), n)),
+      h("div", null, h("span", { class: "k" }, "Description"), d));
+  }));
+  draw();
+  const typeSel = h("select", { id: "cz-newtype", "aria-label": "Section type" }, Object.entries(CUSTOM_TYPES).map(([k, v]) => h("option", { value: k }, v.label + ": " + v.hint)));
+  const addBox = h("div", { class: "cz-add" }, h("b", { style: "font-size:14px" }, "Add a section"), typeSel,
+    h("button", { class: "btn small solid", type: "button", onclick: () => {
+      const t = typeSel.value, id = "c_" + Math.random().toString(36).slice(2, 9);
+      rows.push({ id, custom: true, type: t, title: { text: "About the brand", gallery: "Photography", document: "Brand board", downloads: "Extras" }[t], nav: "", desc: "", hidden: false });
+      draw(); setTimeout(() => { const inp = document.getElementById("cz-t-" + id); if (inp) { inp.focus(); inp.select(); } }, 0);
+    } }, "Add"));
+  const save = h("button", { class: "btn solid", type: "submit" }, "Save");
+  f.replaceChildren(h("h2", null, "Customize sections"), h("p", { class: "note" }, "Rename, hide, reorder or add sections. Hiding a section keeps its content. Removing a section you added deletes its content when you save."), list, addBox, err,
+    h("div", { class: "dlg-foot" },
+      h("button", { class: "btn", type: "button", style: "margin-right:auto", onclick: () => { const extras = rows.filter(r => r.custom); rows.splice(0, rows.length, ...SECTION_DEFAULTS.map(d => ({ ...d })), ...extras); draw(); } }, "Reset built-in sections"),
+      h("button", { class: "btn", type: "button", onclick: () => $("dlg").close() }, "Cancel"), save));
+  f.onsubmit = async e => {
+    e.preventDefault();
+    if (rows.some(x => !x.title.trim())) { err.textContent = "Every section needs a title."; err.hidden = false; return; }
+    save.disabled = true; save.textContent = "Saving…";
+    try {
+      await db.doc("hub/layout").set({ sections: rows.map(x => ({ id: x.id, title: x.title.trim(), nav: (x.nav || "").trim(), desc: (x.desc || "").trim(), hidden: !!x.hidden, ...(x.custom ? { custom: true, type: x.type } : {}) })) });
+      $("dlg").close(); toast("Sections updated");
+      for (const id of removed) { try { await deleteCustomContent(id); } catch {} }
+    } catch { err.textContent = "Couldn't save. Try again."; err.hidden = false; save.disabled = false; save.textContent = "Save"; }
+  };
+  $("dlg").classList.add("wide");
+  $("dlg").showModal();
+}
+async function clearSample() {
+  for (const k of COLS) for (const it of S[k].filter(x => x.sample)) await db.collection(k).doc(it.id).delete();
+  if (S.brand && S.brand.sample) await db.doc("hub/brand").delete();
+}
+
+/* ---------- wiring ---------- */
+$("editToggle").addEventListener("click", () => { editing = !editing; $("editToggle").textContent = editing ? EDIT_LABELS[1] : EDIT_LABELS[0]; $("editToggle").classList.toggle("on", editing); $("customizeBtn").hidden = !editing; render(); });
+$("customizeBtn").addEventListener("click", openCustomize);
+$("dlg").addEventListener("close", () => $("dlg").classList.remove("wide"));
+$("editBrand").addEventListener("click", () => openEditor("brand", S.brand));
+document.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => openEditor(b.dataset.add)));
+$("copyCss").addEventListener("click", () => {
+  const used = {};
+  const css = ":root {\n" + S.colors.filter(c => normHex(c.hex)).map(c => { let s = slug(c.name); used[s] = (used[s] || 0) + 1; if (used[s] > 1) s += "-" + used[s]; return `  --color-${s}: ${normHex(c.hex)};`; }).join("\n") + "\n}";
+  copy(css, "palette as CSS");
+});
+
+// Exported site: content and files sit next to the page. A protected site keeps them encrypted until the visitor enters the password.
+let usingSnapshot = false;
+function siteAssets(map, key) {
+  const urls = {}, cache = {};
+  return {
+    url: id => key ? (urls[id] || "") : (map[id] ? map[id].path : ""),
+    async blob(id) {
+      if (cache[id]) return cache[id];
+      const m = map[id]; if (!m) throw new Error("missing file");
+      const r = await fetch(m.path); if (!r.ok) throw new Error("fetch");
+      let buf = await r.arrayBuffer();
+      if (key) buf = await decryptBuf(key, buf);
+      const b = new Blob([buf], { type: m.type || "application/octet-stream" });
+      if (key) urls[id] = URL.createObjectURL(b);
+      return (cache[id] = b);
+    },
+  };
+}
+function unlockSite(meta) {
+  const lock = $("lock"), form = $("lockForm"), pw = $("lockPw"), err = $("lockErr"), btn = $("lockBtn");
+  lock.hidden = false;
+  const memKey = "hubpw:" + meta.salt;
+  let data = null;
+  const attempt = async p => {
+    data = data || await fetch("data.bin", { cache: "no-store" }).then(r => { if (!r.ok) throw { net: true }; return r.arrayBuffer(); });
+    const key = await deriveKey(p, meta);
+    let json;
+    try { json = JSON.parse(new TextDecoder().decode(await decryptBuf(key, data))); } catch { throw { bad: true }; }
+    try { sessionStorage.setItem(memKey, p); } catch {}
+    return { key, data: json };
+  };
+  const fromLink = new URLSearchParams(location.hash.slice(1)).get("p");
+  const manual = msg => {
+    lock.classList.remove("auto"); lock.querySelector("h1").textContent = "Enter password";
+    if (msg) { err.textContent = msg; err.hidden = false; }
+    setTimeout(() => pw.focus(), 50);
+  };
+  return new Promise(resolve => {
+    let saved = null; try { saved = sessionStorage.getItem(memKey); } catch {}
+    if (fromLink) {
+      lock.classList.add("auto"); lock.querySelector("h1").textContent = "Opening brand hub…";
+      attempt(fromLink).then(resolve).catch(x => manual(x && x.net ? "This hub couldn't be loaded. Check your connection and refresh." : "This link is incomplete or out of date. Ask your designer for the current link."));
+    }
+    else if (saved) attempt(saved).then(resolve).catch(() => manual());
+    else manual();
+    form.onsubmit = async e => {
+      e.preventDefault(); err.hidden = true; btn.disabled = true; btn.textContent = "Unlocking…";
+      try { resolve(await attempt(pw.value)); }
+      catch (x) {
+        err.textContent = x && x.net ? "This hub couldn't be loaded. Check your connection and try again." : "That password didn't work. Check it with your designer and try again.";
+        err.hidden = false; btn.disabled = false; btn.textContent = "Unlock"; pw.select();
+      }
+    };
+  });
+}
+async function useSnapshot() {
+  if (loaded) return;
+  try {
+    const meta = await fetch("meta.json", { cache: "no-store" }).then(r => { if (!r.ok) throw 0; return r.json(); });
+    let d, key = null;
+    if (meta.enc) { const u = await unlockSite(meta); d = u.data; key = u.key; }
+    else d = await fetch("content.json", { cache: "no-store" }).then(r => { if (!r.ok) throw 0; return r.json(); });
+    const map = d.assets || {};
+    window.HUB_ASSETS = siteAssets(map, key);
+    if (key) {
+      // Images and fonts are unlocked up front so the page renders complete; PDFs and downloads unlock when opened.
+      const want = Object.keys(map).filter(id => /^(image|font)\//.test(map[id].type || ""));
+      const prog = $("lockProgress"); let n = 0;
+      prog.hidden = !want.length;
+      const step = () => { prog.textContent = `Unlocking files… ${n} of ${want.length}`; };
+      step();
+      const queue = want.slice();
+      await Promise.all(Array.from({ length: 4 }, async () => { while (queue.length) { const id = queue.shift(); try { await window.HUB_ASSETS.blob(id); } catch {} n++; step(); } }));
+    }
+    dl = anchorDownloads;
+    const byOrder = (x, y) => (x.order || 0) - (y.order || 0);
+    S.hubDocs = d.hub || {};
+    S.layout = S.hubDocs.layout || null; S.brand = S.hubDocs.brand || null;
+    S.guide = S.hubDocs.guide || null; S.direction = S.hubDocs.direction || null;
+    for (const k of COLS) S[k] = (d[k] || []).slice().sort(byOrder);
+    usingSnapshot = true; loaded = true; unreachable = false;
+    $("lock").hidden = true;
+    if (EMBEDDED) {
+      const post = () => { try { parent.postMessage({ brandHubHeight: Math.ceil(document.body.scrollHeight) }, "*"); } catch {} };
+      try { new ResizeObserver(post).observe(document.body); } catch {}
+      addEventListener("load", post); setTimeout(post, 300);
+    }
+  } catch { unreachable = true; }
+  render();
+}
+render();
+(async () => {
+  const c = window.claude;
+  if (!c || !c.use) { useSnapshot(); return; }
+  [db, user] = await Promise.all([c.use("db"), c.use("user")]);
+  canEdit = user ? await user.canEdit() : false;
+  $("editToggle").hidden = !(canEdit && db);
+  if (window.HUB_BUILDER && canEdit) { editing = true; $("editToggle").textContent = EDIT_LABELS[1]; $("customizeBtn").hidden = false; }
+  c.use("assets").then(a => { assets = a; render(); });
+  c.use("downloads").then(d => { dl = d; render(); });
+  if (!db) { useSnapshot(); return; }
+  const timer = setTimeout(() => { if (!loaded) useSnapshot(); }, 8000);
+  const done = () => { usingSnapshot = false; loaded = true; unreachable = false; clearTimeout(timer); };
+  const onErr = () => { clearTimeout(timer); if (!loaded) useSnapshot(); };
+  db.collection("hub").onSnapshot(q => { S.hubDocs = Object.fromEntries(q.docs.map(d => [d.id, d.data()])); render(); }, onErr);
+  db.doc("hub/layout").onSnapshot(s => { S.layout = s.exists ? s.data() : null; render(); }, onErr);
+  db.doc("hub/direction").onSnapshot(s => { S.direction = s.exists ? s.data() : null; render(); }, onErr);
+  db.doc("hub/guide").onSnapshot(s => { S.guide = s.exists ? s.data() : null; render(); }, onErr);
+  db.doc("hub/brand").onSnapshot(s => { S.brand = s.exists ? s.data() : null; if (!s.metadata.fromCache) done(); render(); }, onErr);
+  for (const k of COLS) db.collection(k).onSnapshot(q => {
+    S[k] = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.order || 0) - (b.order || 0));
+    render();
+  }, onErr);
+})();
+})();
+</script>
+</body>
+</html>
